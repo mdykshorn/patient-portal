@@ -1,0 +1,41 @@
+@import '~antd/dist/antd.css';
+
+.App-header {
+  background-color: #087ca7;
+}
+
+.App-header h1 {
+  color: whitesmoke;
+}
+
+.App-header, .App-footer {
+  text-align: center;
+}
+
+.App-content {
+  text-align: center;
+  padding: 50px;
+  min-height: 500px;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+.App-search {
+  max-width: 400px;
+  margin-bottom: 50px;
+}
+
+.App-list {
+  text-align: left;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

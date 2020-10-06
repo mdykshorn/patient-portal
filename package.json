@@ -1,0 +1,11 @@
+{
+  "name": "patient-portal",
+  "version": "1.0.0",
+  "dependencies": {
+    "concurrently": "^4.1.0"
+  },
+  "scripts": {
+    "install-kit": "bin/install-kit",
+    "start": "concurrently \"cd server && npm start\" \"cd frontend && npm start\""
+  }
+}
