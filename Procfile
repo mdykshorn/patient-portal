@@ -1,2 +1,2 @@
 web: cd server && npm run start
-ui: bin/boot
+web: bin/boot
