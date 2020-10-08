@@ -1,5 +1,5 @@
 {
-  "name": "fhir-kit-server-example",
+  "name": "patient-portal-server",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
