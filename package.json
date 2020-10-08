@@ -14,6 +14,7 @@
   },
   "scripts": {
     "start": "concurrently \"cd server && nodemon start\" \"cd frontend && npm start\"",
-    "install": "cd frontend/ && npm install && npm run build && cd ../server/ && npm install"
+    "install": "cd frontend/ && npm install && npm run build && cd ../server/ && npm install",
+    "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   }
 }
