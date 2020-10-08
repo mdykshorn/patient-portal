@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Patient Portal",
+  "name": "Patient Portal Diagnostic Utility",
   "icons": [
     {
       "src": "favicon.ico",
