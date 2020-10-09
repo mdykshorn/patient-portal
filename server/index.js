@@ -7,6 +7,9 @@ const numCPUs = require("os").cpus().length;
 const isDev = process.env.NODE_ENV !== "production";
 const PORT = process.env.PORT || 5000;
 
+const config = { baseUrl: "https://hapi.fhir.org/baseDstu3" };
+const client = new fhirKitClient(config);
+
 // Multi-process to utilize all CPU cores.
 if (!isDev && cluster.isMaster) {
   console.error(`Node cluster master ${process.pid} is running`);
