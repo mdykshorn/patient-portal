@@ -2,19 +2,12 @@
   "name": "patient-portal",
   "version": "1.0.0",
   "dependencies": {
-    "@material-ui/core": "^4.11.0",
-    "@material-ui/icons": "^4.9.1",
-    "concurrently": "^4.1.0",
-    "react-dom": "^16.13.1",
-    "react-loader-spinner": "^3.1.14",
-    "react-promise-tracker": "^2.1.0",
-    "react-router-dom": "^5.2.0",
     "express": "^4.16.3",
     "fhir-kit-client": "^1.0.0"
   },
   "scripts": {
-    "start": "concurrently \"cd server && nodemon start\" \"cd frontend && npm start\"",
-    "install": "cd frontend/ && npm install && npm run build && cd ../server/ && npm install",
+    "start": "concurrently \"cd server && nodemon server\" \"cd frontend && npm start\"",
+    "install": "cd frontend/ && npm install && cd ../server/ && npm install",
     "heroku-postbuild": "cd frontend && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   }
 }
