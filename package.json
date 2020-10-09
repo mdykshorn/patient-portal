@@ -6,7 +6,7 @@
     "fhir-kit-client": "^1.0.0"
   },
   "scripts": {
-    "start": "concurrently \"cd server && nodemon server\" \"cd frontend && npm start\"",
+    "start": "concurrently \"nodemon server\" \"cd frontend && npm start\"",
     "heroku-postbuild": "cd frontend && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   }
 }
