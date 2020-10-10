@@ -1,6 +1,6 @@
 codes = [
-  ["55284-4", "8480-6"], // BP systolic
-  ["55284-4", "8462-4"], // BP disys
+  "8480-6", // BP systolic
+  "8462-4", // BP disys
   "2160-0", // SCR
   "48642-3", //GFR
   "21482-5", // 24hour protein in urine
@@ -49,21 +49,54 @@ function getBloodPressureValue(BPObservations, typeOfPressure) {
 
 module.exports = {
   parseObservations: async function (observations) {
-    return observations
-      ? observations.map((obj) => {
-          //console.log(obj);
-          return obj;
-          return {
-            id: obj.resource.id,
-            //   name: `${obj.resource.name[0].given} ${obj.resource.name[0].family}`,
-            //   gender: obj.resource.gender,
-            //   birthDate: obj.resource.birthDate,
-            //   imageURL: "",
-          };
-        })
-      : [];
+    filtered_observations = {
+      "2160-0": {
+        name: "Creatinine [Mass/Vol]",
+        data: [],
+      },
+      "48642-3": {
+        name: "GFR/BSA pr.non blk SerPlBld MDRD-ArV",
+        data: [],
+      },
+      "8480-6": {
+        name: "Systolic blood pressure",
+        data: [],
+      },
+      "8462-4": {
+        name: "Diastolic blood pressure",
+        data: [],
+      },
+      "21482-5": {
+        name: "Protein (24H U) [Mass/Vol]",
+        data: [],
+      },
+    };
+
+    observations.forEach((obj) => {
+      if (obj.resource.code.coding) {
+        if (
+          Object.keys(filtered_observations).includes(
+            obj.resource.code.coding[0].code
+          )
+        ) {
+          filtered_observations[obj.resource.code.coding[0].code].data.push([
+            obj.resource.effectiveDateTime,
+            obj.resource.valueQuantity.value,
+          ]);
+        }
+      }
+    });
+
+    return filtered_observations;
   },
   getMapping: function (observationCode) {
     return observationMapping[observationCode];
+  },
+  getPrognosis: function (recentObservations) {
+    return {
+      RiskFactor: 50,
+      Standing: "Good",
+      Percentile: "71%",
+    };
   },
 };

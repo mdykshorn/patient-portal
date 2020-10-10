@@ -3,6 +3,8 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 import NavBar from "./NavBar";
 import { Card, Grid, Typography } from "@material-ui/core";
 import { trackPromise } from "react-promise-tracker";
+import { ScatterChart, LineChart } from "react-chartkick";
+import "chart.js";
 
 const useStyles = makeStyles({
   root: {
@@ -38,6 +40,7 @@ class PatientDetails extends Component {
     this.state = {
       id: props.match.params.pid,
       patient: {},
+      observations: {},
     };
   }
   componentDidMount() {
@@ -47,7 +50,7 @@ class PatientDetails extends Component {
       })
         .then((response) => response.json())
         .then((patient) => {
-          this.setState({ patient: patient });
+          this.setState(patient);
         })
         .catch((err) => {
           console.log(err);
@@ -84,19 +87,40 @@ class PatientDetails extends Component {
               DOB: {this.state.patient.birthDate}
             </Typography>
           </Card>
-          <Card className={classes.root}>
-            <Typography
-              className={classes.title}
-              color="textSecondary"
-              gutterBottom
-            />
-            <Typography variant="h5" component="h2">
-              Name: {this.state.patient.name}
-            </Typography>
-            <Typography className={classes.pos} color="textSecondary">
-              DOB: {this.state.patient.birthDate}
-            </Typography>
-          </Card>
+          {this.state.prognosis ? (
+            <Card className={classes.root}>
+              <Typography
+                className={classes.title}
+                color="textSecondary"
+                gutterBottom
+              />
+              <Typography className={classes.pos} color="textSecondary">
+                Risk: {this.state.prognosis.RiskFactor}
+              </Typography>
+              <Typography className={classes.pos} color="textSecondary">
+                Percentile: {this.state.prognosis.Percentile}
+              </Typography>
+              <Typography className={classes.pos} color="textSecondary">
+                Standing: {this.state.prognosis.Standing}
+              </Typography>
+            </Card>
+          ) : (
+            <div></div>
+          )}
+          {Object.keys(this.state.observations).map((code, index) => {
+            var codeData = this.state.observations[code];
+            console.log(codeData);
+            return (
+              <Grid key={index} item xs={12} sm={6} lg={4} xl={3}>
+                <Card className={classes.root}>
+                  <Typography variant="h5" component="h2">
+                    {this.state.observations[code].name}
+                  </Typography>
+                  <LineChart data={codeData.data} />
+                </Card>
+              </Grid>
+            );
+          })}
         </Grid>
       </div>
     );

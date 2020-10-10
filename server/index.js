@@ -98,7 +98,12 @@ if (!isDev && cluster.isMaster) {
           res.status(400).json({ patient: { id: req.params.pid } });
         }),
     ]).then((data) => {
-      var data = { patient: data[0], observations: data[1] };
+      var prognosis = fhir.getPrognosis(data[1]);
+      var data = {
+        patient: data[0],
+        observations: data[1],
+        prognosis: prognosis,
+      };
       res.status(200).json(data);
     });
   });
