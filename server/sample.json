@@ -1,0 +1,8 @@
+{
+  "resourceType": "Observation",
+  "active": true,
+  "code": { "coding": [{ "system": "http://loinc.org" }] },
+  "valueQuantity": { "value": "3", "system": "http://unitsofmeasure.org" },
+  "subject": { "id": "1653517", "type": "Patient" },
+  "effectiveDateTime": "2020-10-10T14:58:45.572Z"
+}

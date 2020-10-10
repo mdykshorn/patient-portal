@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import NavBar from "./NavBar";
-import { Card, Box, Typography } from "@material-ui/core";
+import { Card, Grid, Typography } from "@material-ui/core";
 import { trackPromise } from "react-promise-tracker";
 
 const useStyles = makeStyles({
@@ -62,7 +62,15 @@ class PatientDetails extends Component {
     return (
       <div>
         <NavBar />
-        <Box component="span" className={classes.alignBox}>
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          lg={4}
+          xl={3}
+          component="span"
+          className={classes.alignBox}
+        >
           <Card className={classes.root}>
             <Typography
               className={classes.title}
@@ -76,7 +84,20 @@ class PatientDetails extends Component {
               DOB: {this.state.patient.birthDate}
             </Typography>
           </Card>
-        </Box>
+          <Card className={classes.root}>
+            <Typography
+              className={classes.title}
+              color="textSecondary"
+              gutterBottom
+            />
+            <Typography variant="h5" component="h2">
+              Name: {this.state.patient.name}
+            </Typography>
+            <Typography className={classes.pos} color="textSecondary">
+              DOB: {this.state.patient.birthDate}
+            </Typography>
+          </Card>
+        </Grid>
       </div>
     );
   }

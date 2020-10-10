@@ -1,6 +1,6 @@
 {
-  "short_name": "Patient Portal",
-  "name": "Patient Portal Diagnostic Utility",
+  "short_name": "IGA Buddy",
+  "name": "IGA Prognosis Utility",
   "icons": [
     {
       "src": "favicon.ico",

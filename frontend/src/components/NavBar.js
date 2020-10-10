@@ -13,17 +13,17 @@ import {
   Tooltip,
   ListItem,
 } from "@material-ui/core";
-
 import HomeIcon from "@material-ui/icons/Home";
 import SearchIcon from "@material-ui/icons/Search";
 import MenuIcon from "@material-ui/icons/Menu";
-
 import {
   BrowserRouter as Router,
   Route,
   Link,
   withRouter,
 } from "react-router-dom";
+
+import RecordInput from "./RecordInput";
 
 const drawerWidth = 240;
 
@@ -149,7 +149,7 @@ class NavBar extends Component {
               </IconButton>
             </Tooltip>
             <Typography className={classes.title} variant="h6" noWrap>
-              Patient Portal
+              IGA Buddy
             </Typography>
             <Tooltip title="Home">
               <IconButton
@@ -177,6 +177,7 @@ class NavBar extends Component {
                 onKeyDown={this.onSearchEnter}
               />
             </div>
+            <RecordInput match={this.props.match} />
           </Toolbar>
         </AppBar>
       </div>

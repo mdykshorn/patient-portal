@@ -107,7 +107,7 @@ class SearchLanding extends Component {
         <AppBar position="static">
           <Toolbar>
             <Typography className={classes.title} variant="h6" noWrap>
-              Patient Portal Diagnostic Utility
+              IGA Buddy
             </Typography>
           </Toolbar>
         </AppBar>

@@ -12,7 +12,6 @@ ReactDOM.render(
       <App />
       <LoadingIndicator />
     </HashRouter>
-    ,
   </React.StrictMode>,
   document.getElementById("root")
 );
