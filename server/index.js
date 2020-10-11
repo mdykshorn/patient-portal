@@ -154,7 +154,7 @@ if (!isDev && cluster.isMaster) {
       })
       .then((data) => {
         console.log("added observation");
-        console.log(data);
+        console.log(JSON.stringify(data));
         res.status(200).json(data);
       })
       .catch((err) => {

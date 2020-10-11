@@ -49,7 +49,7 @@ function getBloodPressureValue(BPObservations, typeOfPressure) {
 
 module.exports = {
   parseObservations: async function (observations) {
-    filtered_observations = {
+    var filtered_observations = {
       "2160-0": {
         name: "Creatinine [Mass/Vol]",
         data: [],
@@ -72,6 +72,10 @@ module.exports = {
       },
     };
 
+    if (!observations) {
+      return filtered_observations;
+    }
+
     observations.forEach((obj) => {
       if (obj.resource.code.coding) {
         if (
@@ -87,16 +91,86 @@ module.exports = {
       }
     });
 
+    Object.keys(filtered_observations).forEach((obs) => {
+      filtered_observations[obs]["data"].sort(function (a, b) {
+        // Turn your strings into dates, and then subtract them
+        // to get a value that is either negative, positive, or zero.
+        return new Date(b[0]) - new Date(a[0]);
+      });
+      filtered_observations[obs]["recent"] = filtered_observations[obs][
+        "data"
+      ].slice(-1)[0];
+    });
+
     return filtered_observations;
   },
   getMapping: function (observationCode) {
     return observationMapping[observationCode];
   },
+  /**
+   * prognosis info pulled from the following paper:
+   * https://www.uptodate.com/contents/treatment-and-prognosis-of-iga-nephropathy
+   * @param {*} recentObservations
+   */
   getPrognosis: function (recentObservations) {
-    return {
-      RiskFactor: 50,
-      Standing: "Good",
-      Percentile: "71%",
+    var prognosis = {
+      RiskFactor: 0,
+      Standing: "no records",
+      Percentile: "no records",
     };
+
+    var overalProg = 0;
+
+    if (recentObservations["2160-0"].recent) {
+      var val = recentObservations["2160-0"].recent[1];
+
+      if (val > 1.68) {
+        prognosis["Percentile"] = 71;
+        overalProg += 10;
+      } else if (val > 1.26) {
+        prognosis["Percentile"] = 26;
+        overalProg += 5;
+      } else {
+        prognosis["Percentile"] = 2.5;
+      }
+    }
+    if (recentObservations["48642-3"].recent) {
+      var val = recentObservations["48642-3"].recent[1];
+      if (val < 60) {
+        overalProg += 20;
+      }
+    }
+    if (recentObservations["8480-6"].recent) {
+      var val = recentObservations["8480-6"].recent[1];
+      if (val > 140) {
+        overalProg += 10;
+      }
+    }
+    if (recentObservations["8462-4"].recent) {
+      var val = recentObservations["8462-4"].recent[1];
+      if (val > 90) {
+        overalProg += 10;
+      }
+    }
+    if (recentObservations["21482-5"].recent) {
+      var val = recentObservations["21482-5"].recent[1];
+      if (val > 1000) {
+        overalProg += 10;
+      } else if (val > 3500) {
+        overalProg += 30;
+      }
+    }
+
+    prognosis["RiskFactor"] = overalProg;
+
+    if (overalProg < 20) {
+      prognosis["Standing"] = "good";
+    } else if (overalProg < 40) {
+      prognosis["Standing"] = "at risk";
+    } else {
+      prognosis["Standing"] = "seek medical attention";
+    }
+
+    return prognosis;
   },
 };

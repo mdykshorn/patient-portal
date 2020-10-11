@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import NavBar from "./NavBar";
-import { Card, Grid, Typography } from "@material-ui/core";
+import { Card, Grid, Typography, Paper, Divider } from "@material-ui/core";
 import { trackPromise } from "react-promise-tracker";
 import { ScatterChart, LineChart } from "react-chartkick";
 import "chart.js";
@@ -11,7 +11,8 @@ const useStyles = makeStyles({
     flexGrow: 1,
     minwidth: 275,
     alignItems: "center",
-    maxWidth: 400,
+    maxWidth: 300,
+    minHeight: 300,
   },
   alignBox: {
     width: 500,
@@ -31,6 +32,25 @@ const useStyles = makeStyles({
   },
   pos: {
     marginBottom: 12,
+  },
+  menuButton: {
+    marginRight: "10px",
+  },
+  title: {
+    display: "none",
+  },
+  pos: {
+    marginBottom: "10px",
+    marginLeft: "10px",
+  },
+  good: {
+    colorTextSecondary: "green",
+  },
+  "at risk ": {
+    colorTextSecondary: "yellow",
+  },
+  "seek medical attention": {
+    colorTextSecondary: "red",
   },
 });
 
@@ -65,63 +85,108 @@ class PatientDetails extends Component {
     return (
       <div>
         <NavBar />
-        <Grid
-          item
-          xs={12}
-          sm={6}
-          lg={4}
-          xl={3}
-          component="span"
-          className={classes.alignBox}
-        >
-          <Card className={classes.root}>
-            <Typography
-              className={classes.title}
-              color="textSecondary"
-              gutterBottom
-            />
-            <Typography variant="h5" component="h2">
-              Name: {this.state.patient.name}
-            </Typography>
-            <Typography className={classes.pos} color="textSecondary">
-              DOB: {this.state.patient.birthDate}
-            </Typography>
-          </Card>
-          {this.state.prognosis ? (
+        <Grid container spacing={2} style={{ padding: 12 }}>
+          <Grid item component="span" className={classes.alignBox}>
             <Card className={classes.root}>
               <Typography
                 className={classes.title}
                 color="textSecondary"
                 gutterBottom
               />
-              <Typography className={classes.pos} color="textSecondary">
-                Risk: {this.state.prognosis.RiskFactor}
+              <Typography variant="h5" component="h2">
+                Name: {this.state.patient.name}
               </Typography>
               <Typography className={classes.pos} color="textSecondary">
-                Percentile: {this.state.prognosis.Percentile}
-              </Typography>
-              <Typography className={classes.pos} color="textSecondary">
-                Standing: {this.state.prognosis.Standing}
+                DOB: {this.state.patient.birthDate}
               </Typography>
             </Card>
+          </Grid>
+          {this.state.prognosis ? (
+            <Grid item component="span" className={classes.alignBox}>
+              <Card className={classes.root}>
+                <Typography
+                  className={classes.title}
+                  color="textSecondary"
+                  gutterBottom
+                />
+                <Typography variant="h5" component="h2">
+                  Prognosis
+                </Typography>
+                <Typography className={classes.pos} color="textSecondary">
+                  Risk (0-80): {this.state.prognosis.RiskFactor}
+                </Typography>
+                <Typography className={classes.pos} color="textSecondary">
+                  Odds of ESRD in 10 Years: {this.state.prognosis.Percentile}
+                </Typography>
+                <Typography
+                  color="textSecondary"
+                  className={this.state.prognosis.Standing}
+                >
+                  Standing: {this.state.prognosis.Standing}
+                </Typography>
+              </Card>
+            </Grid>
           ) : (
             <div></div>
           )}
-          {Object.keys(this.state.observations).map((code, index) => {
-            var codeData = this.state.observations[code];
-            console.log(codeData);
-            return (
-              <Grid key={index} item xs={12} sm={6} lg={4} xl={3}>
-                <Card className={classes.root}>
-                  <Typography variant="h5" component="h2">
-                    {this.state.observations[code].name}
-                  </Typography>
-                  <LineChart data={codeData.data} />
-                </Card>
-              </Grid>
-            );
-          })}
+          {this.state.observations ? (
+            <Grid item component="span" className={classes.alignBox}>
+              <Card className={classes.root}>
+                <Typography
+                  className={classes.title}
+                  color="textSecondary"
+                  gutterBottom
+                />
+                <Typography variant="h5" component="h2">
+                  Recent Observations
+                </Typography>
+                {Object.keys(this.state.observations).map((obs, index) => {
+                  var codeData = this.state.observations[obs];
+                  return codeData.recent ? (
+                    <Typography variant="body2" component="h2">
+                      {codeData.name}: {codeData.recent[1]}
+                    </Typography>
+                  ) : (
+                    <Typography variant="body2" component="h2">
+                      {codeData.name}: No Record
+                    </Typography>
+                  );
+                })}
+              </Card>
+            </Grid>
+          ) : (
+            <div></div>
+          )}
         </Grid>
+        <Divider />
+        <Paper elevation={3}>
+          <Typography variant="h3" component="h2" align="center">
+            Charts
+          </Typography>
+          <Grid container spacing={2} style={{ padding: 12 }}>
+            {Object.keys(this.state.observations).map((code, index) => {
+              var codeData = this.state.observations[code];
+              return (
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  lg={4}
+                  xl={3}
+                  component="span"
+                  className={classes.alignBox}
+                >
+                  <Card className={classes.root}>
+                    <Typography variant="h5" component="h2">
+                      {this.state.observations[code].name}
+                    </Typography>
+                    <LineChart data={codeData.data} />
+                  </Card>
+                </Grid>
+              );
+            })}
+          </Grid>
+        </Paper>
       </div>
     );
   }

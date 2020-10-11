@@ -1,8 +1,17 @@
 {
   "resourceType": "Observation",
-  "active": true,
-  "code": { "coding": [{ "system": "http://loinc.org" }] },
-  "valueQuantity": { "value": "3", "system": "http://unitsofmeasure.org" },
-  "subject": { "id": "1653517", "type": "Patient" },
-  "effectiveDateTime": "2020-10-10T14:58:45.572Z"
+  "id": "2755772",
+  "meta": { "versionId": "1", "lastUpdated": "2020-10-11T23:47:30.836+00:00" },
+  "code": {
+    "coding": [
+      {
+        "system": "http://loinc.org",
+        "code": "2160-0",
+        "display": "Creatinine [Mass/Vol]"
+      }
+    ]
+  },
+  "subject": { "id": "1988751", "reference": "Patient/1988751" },
+  "effectiveDateTime": "2020-10-11T23:47:09.613Z",
+  "valueQuantity": { "value": 1.01, "system": "http://unitsofmeasure.org" }
 }
