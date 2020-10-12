@@ -1,9 +1,17 @@
 import React, { Component } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import NavBar from "./NavBar";
-import { Card, Grid, Typography, Paper, Divider } from "@material-ui/core";
+import {
+  Card,
+  Grid,
+  Typography,
+  Paper,
+  Divider,
+  Link,
+  Tooltip,
+} from "@material-ui/core";
 import { trackPromise } from "react-promise-tracker";
-import { ScatterChart, LineChart } from "react-chartkick";
+import { LineChart } from "react-chartkick";
 import "chart.js";
 
 const useStyles = makeStyles({
@@ -33,20 +41,10 @@ const useStyles = makeStyles({
   pos: {
     marginBottom: 12,
   },
-  menuButton: {
-    marginRight: "10px",
-  },
-  title: {
-    display: "none",
-  },
-  pos: {
-    marginBottom: "10px",
-    marginLeft: "10px",
-  },
   good: {
     colorTextSecondary: "green",
   },
-  "at risk ": {
+  "at risk": {
     colorTextSecondary: "yellow",
   },
   "seek medical attention": {
@@ -99,6 +97,9 @@ class PatientDetails extends Component {
               <Typography className={classes.pos} color="textSecondary">
                 DOB: {this.state.patient.birthDate}
               </Typography>
+              <Typography className={classes.pos} color="textSecondary">
+                Patient ID: {this.state.patient.id}
+              </Typography>
             </Card>
           </Grid>
           {this.state.prognosis ? (
@@ -111,6 +112,15 @@ class PatientDetails extends Component {
                 />
                 <Typography variant="h5" component="h2">
                   Prognosis
+                </Typography>
+                <Typography className={classes.pos} color="textSecondary">
+                  <Link
+                    href="https://www.uptodate.com/contents/treatment-and-prognosis-of-iga-nephropathy"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    Prognosis Metrics Adapted from UpToDate
+                  </Link>
                 </Typography>
                 <Typography className={classes.pos} color="textSecondary">
                   Risk (0-80): {this.state.prognosis.RiskFactor}
@@ -143,13 +153,28 @@ class PatientDetails extends Component {
                 {Object.keys(this.state.observations).map((obs, index) => {
                   var codeData = this.state.observations[obs];
                   return codeData.recent ? (
-                    <Typography variant="body2" component="h2">
-                      {codeData.name}: {codeData.recent[1]}
-                    </Typography>
+                    <Tooltip title={codeData.description}>
+                      <Typography
+                        variant="body2"
+                        component="h2"
+                        color="textSecondary"
+                        key={index}
+                      >
+                        {codeData.shortName}: {codeData.recent[1]}{" "}
+                        {codeData.units}
+                      </Typography>
+                    </Tooltip>
                   ) : (
-                    <Typography variant="body2" component="h2">
-                      {codeData.name}: No Record
-                    </Typography>
+                    <Tooltip title={codeData.description}>
+                      <Typography
+                        variant="body2"
+                        component="h2"
+                        color="textSecondary"
+                        key={index}
+                      >
+                        {codeData.name}: No Record
+                      </Typography>
+                    </Tooltip>
                   );
                 })}
               </Card>
@@ -175,10 +200,11 @@ class PatientDetails extends Component {
                   xl={3}
                   component="span"
                   className={classes.alignBox}
+                  key={index}
                 >
                   <Card className={classes.root}>
                     <Typography variant="h5" component="h2">
-                      {this.state.observations[code].name}
+                      {this.state.observations[code].shortName}
                     </Typography>
                     <LineChart data={codeData.data} />
                   </Card>

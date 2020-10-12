@@ -3,13 +3,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import {
   Card,
   CardActionArea,
-  CardActions,
   CardContent,
   Button,
   Typography,
-  MatLink,
 } from "@material-ui/core";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
@@ -36,13 +34,6 @@ const Patient = (props) => {
   return (
     <Card className={classes.root}>
       <CardActionArea component={Link} to={`/patient/${props.patient.id}`}>
-        <div className={classes.media}>
-          <image
-            className={classes.image}
-            src={props.patient.imageURL}
-            alt={props.patient.name}
-          />
-        </div>
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
             {props.patient.name}
@@ -57,16 +48,15 @@ const Patient = (props) => {
             DOB: {props.patient.birthDate}
           </Typography>
         </CardContent>
-        <CardActions>
-          <Button
-            size="small"
-            color="primary"
-            component={Link}
-            to={`/patient/${props.patient.id}`}
-          >
-            Get Quick Diagnostic
-          </Button>
-        </CardActions>
+
+        <Button
+          size="small"
+          color="primary"
+          component={Link}
+          to={`/patient/${props.patient.id}`}
+        >
+          Get Quick Diagnostic
+        </Button>
       </CardActionArea>
     </Card>
   );

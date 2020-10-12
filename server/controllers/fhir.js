@@ -53,22 +53,37 @@ module.exports = {
       "2160-0": {
         name: "Creatinine [Mass/Vol]",
         data: [],
+        units: "mg/dL",
+        shortName: "Creatinine",
+        description: "Level of Serum Creatinine",
       },
       "48642-3": {
         name: "GFR/BSA pr.non blk SerPlBld MDRD-ArV",
         data: [],
+        units: "mL/min/{1.73_m2}",
+        shortName: "GFR",
+        description: "Kidney Function",
       },
       "8480-6": {
         name: "Systolic blood pressure",
         data: [],
+        units: "mm[Hg]",
+        shortName: "Systolic blood pressure",
+        description: "Systolic blood pressure",
       },
       "8462-4": {
         name: "Diastolic blood pressure",
         data: [],
+        units: "mm[Hg]",
+        shortName: "Diastolic blood pressure",
+        description: "Diastolic blood pressure",
       },
       "21482-5": {
         name: "Protein (24H U) [Mass/Vol]",
         data: [],
+        units: "mg/24hour",
+        shortName: "Protienuria",
+        description: "Protein in Urine",
       },
     };
 

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Grid, TextField } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { trackPromise } from "react-promise-tracker";
 import NavBar from "./NavBar";
 import Patient from "./Patient";

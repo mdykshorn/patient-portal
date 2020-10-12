@@ -1,31 +1,19 @@
 import React, { Component } from "react";
-import { fade, makeStyles, withStyles } from "@material-ui/core/styles";
+import { fade, withStyles } from "@material-ui/core/styles";
 import {
   AppBar,
   Toolbar,
   IconButton,
   Typography,
   InputBase,
-  Button,
-  Drawer,
-  List,
-  Divider,
   Tooltip,
-  ListItem,
 } from "@material-ui/core";
 import HomeIcon from "@material-ui/icons/Home";
 import SearchIcon from "@material-ui/icons/Search";
 import MenuIcon from "@material-ui/icons/Menu";
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  withRouter,
-} from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 import RecordInput from "./RecordInput";
-
-const drawerWidth = 240;
 
 const styles = (theme) => ({
   grow: {
@@ -110,14 +98,12 @@ class NavBar extends Component {
     e.preventDefault();
     this.props.history.push(`/search/${this.state.searchVal}`);
     window.location.reload();
-    // this.searchPatientNames(this.state.patientName);
   };
 
   onSearchEnter = (e) => {
-    if (e.keyCode == 13) {
+    if (e.keyCode === 13) {
       this.props.history.push(`/search/${this.state.searchVal}`);
       window.location.reload();
-      //   this.searchPatientNames(this.state.patientName);
     }
   };
 
@@ -125,21 +111,13 @@ class NavBar extends Component {
     const { classes } = this.props;
     return (
       <div className={classes.grow}>
-        <AppBar
-          position="static"
-          className={
-            (classes.appBar,
-            {
-              [classes.appBarShift]: this.state.open,
-            })
-          }
-        >
+        <AppBar position="static" className={classes.appBar}>
           <Toolbar>
             <Tooltip title="Previous Patients">
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
-                onCLick={this.handleDrawerOpen}
+                onClick={this.handleDrawerOpen}
                 edge="start"
                 className={
                   (classes.menuButton, this.state.open && classes.hide)

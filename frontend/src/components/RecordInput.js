@@ -14,7 +14,6 @@ import Select from "@material-ui/core/Select";
 
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
@@ -110,7 +109,7 @@ export default function FormDialog(props) {
 
   return (
     <div>
-      <Button variant="contained" color="white" onClick={handleClickOpen}>
+      <Button variant="contained" color="default" onClick={handleClickOpen}>
         Add Patient Observation
       </Button>
       <Dialog
@@ -157,8 +156,10 @@ export default function FormDialog(props) {
               onChange={handleObservationChange}
               label="Observation Type"
             >
-              {observationTypes.map((obs) => (
-                <MenuItem value={obs}>{obs.value}</MenuItem>
+              {observationTypes.map((obs, index) => (
+                <MenuItem value={obs} key={index}>
+                  {obs.value}
+                </MenuItem>
               ))}
             </Select>
           </FormControl>

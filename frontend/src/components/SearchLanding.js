@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Patient from "./Patient";
 import {
   AppBar,
   Toolbar,
@@ -9,16 +8,9 @@ import {
   TextField,
   Box,
   Card,
-  CircularProgress,
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  withRouter,
-} from "react-router-dom";
-import { fade, makeStyles, withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import "./../App.css";
 
 const styles = (theme) => ({
@@ -87,20 +79,17 @@ class SearchLanding extends Component {
   onSearchClick = (e) => {
     this.props.history.push(`/search/${this.state.patientName}`);
     window.location.reload();
-    // this.searchPatientNames(this.state.patientName);
   };
 
   onSearchEnter = (e) => {
-    if (e.keyCode == 13) {
+    if (e.keyCode === 13) {
       this.props.history.push(`/search/${this.state.patientName}`);
       window.location.reload();
-      //   this.searchPatientNames(this.state.patientName);
     }
   };
 
   render() {
     const { classes } = this.props;
-    const { patients, loading, searchResolved } = this.state;
 
     return (
       <div>
@@ -135,4 +124,4 @@ class SearchLanding extends Component {
   }
 }
 
-export default withRouter(withStyles(styles)(SearchLanding));
+export default withStyles(styles)(SearchLanding);
