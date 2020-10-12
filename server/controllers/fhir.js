@@ -114,7 +114,7 @@ module.exports = {
       });
       filtered_observations[obs]["recent"] = filtered_observations[obs][
         "data"
-      ].slice(-1)[0];
+      ].slice(0)[0];
     });
 
     return filtered_observations;

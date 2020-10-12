@@ -126,7 +126,7 @@ class PatientDetails extends Component {
                   Risk (0-80): {this.state.prognosis.RiskFactor}
                 </Typography>
                 <Typography className={classes.pos} color="textSecondary">
-                  Odds of ESRD in 10 Years: {this.state.prognosis.Percentile}
+                  Odds of ESRD in 10 Years: {this.state.prognosis.Percentile} %
                 </Typography>
                 <Typography
                   color="textSecondary"

@@ -46,7 +46,7 @@ const observationTypes = [
     code: "8480-6",
   },
   {
-    subcode: "8462-4",
+    code: "8462-4",
     value: "Diastolic blood pressure",
   },
   {
