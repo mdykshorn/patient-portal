@@ -11,6 +11,7 @@
     "concurrently": "^4.1.0",
     "date-fns": "^2.16.1",
     "http-proxy-middleware": "^1.0.5",
+    "randomcolor": "^0.6.2",
     "react": "^16.8.6",
     "react-chartkick": "^0.4.1",
     "react-dom": "^16.8.6",

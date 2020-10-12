@@ -5,7 +5,8 @@
     "body-parser": "^1.19.0",
     "date-fns": "^2.16.1",
     "express": "^4.16.3",
-    "fhir-kit-client": "^1.0.0"
+    "fhir-kit-client": "^1.0.0",
+    "randomcolor": "^0.6.2"
   },
   "scripts": {
     "start": "concurrently \"nodemon server\" \"cd frontend && npm start\"",

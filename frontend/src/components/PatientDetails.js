@@ -13,6 +13,7 @@ import {
 import { trackPromise } from "react-promise-tracker";
 import { LineChart } from "react-chartkick";
 import "chart.js";
+var randomColor = require("randomcolor");
 
 const useStyles = makeStyles({
   root: {
@@ -191,6 +192,7 @@ class PatientDetails extends Component {
           <Grid container spacing={2} style={{ padding: 12 }}>
             {Object.keys(this.state.observations).map((code, index) => {
               var codeData = this.state.observations[code];
+              var color = randomColor();
               return (
                 <Grid
                   item
@@ -206,7 +208,7 @@ class PatientDetails extends Component {
                     <Typography variant="h5" component="h2">
                       {this.state.observations[code].shortName}
                     </Typography>
-                    <LineChart data={codeData.data} />
+                    <LineChart data={codeData.data} colors={[color]} />
                   </Card>
                 </Grid>
               );
