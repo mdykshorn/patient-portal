@@ -1,3 +1,8 @@
+/*
+SQLite db functionality for user storage
+adapted from here: https://developerhowto.com/2018/12/29/build-a-rest-api-with-node-js-and-express-js/
+*/
+
 var sqlite3 = require("sqlite3").verbose();
 var md5 = require("md5");
 
