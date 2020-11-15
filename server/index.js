@@ -35,7 +35,7 @@ if (!isDev && cluster.isMaster) {
   const loginRouter = require("./routes/loginRoutes");
 
   app.use("/api", apiRouter);
-  app.use("/login", loginRouter);
+  app.use("/user", loginRouter);
 
   // All remaining requests return the React app, so it can handle routing.
   app.get("*", function (request, response) {

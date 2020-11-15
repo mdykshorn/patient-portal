@@ -1,7 +1,7 @@
 const express = require("express");
 const apiRouter = express.Router();
 
-const fhir = require("../controllers/fhirController");
+const fhir = require("../controllers/fhir");
 
 apiRouter.route("/patient").get(fhir.getPatient);
 
