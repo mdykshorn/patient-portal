@@ -1,0 +1,3 @@
+pandas
+scipy
+liac-arff=2.5.0
