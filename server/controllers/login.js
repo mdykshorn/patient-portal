@@ -54,7 +54,6 @@ async function register(req, res) {
     res.status(400).json({ error: errors.join(",") });
     return;
   }
-  console.log(req.body);
   var patientData = {
     firstname: req.body.firstname,
     lastname: req.body.lastname,

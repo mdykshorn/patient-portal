@@ -43,6 +43,12 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
             md5("user123456"),
             "Patient-BD-Pa5",
           ]);
+          db.run(insert, [
+            "Brian Green",
+            "bgreen@test.com",
+            md5("test123"),
+            "512998",
+          ]);
         }
       }
     );
