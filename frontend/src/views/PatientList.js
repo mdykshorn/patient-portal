@@ -15,7 +15,7 @@ class PatientList extends Component {
 
   componentDidMount() {
     trackPromise(
-      fetch(`api/patient?name=${this.state.name}`, {
+      fetch(`../api/patient?name=${this.state.name}`, {
         accept: "application/json",
       })
         .then((response) => response.json())

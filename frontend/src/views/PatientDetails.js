@@ -64,7 +64,7 @@ class PatientDetails extends Component {
   }
   componentDidMount() {
     trackPromise(
-      fetch(`api/patient/${this.state.id}`, {
+      fetch(`../api/patient/${this.state.id}`, {
         accept: "application/json",
       })
         .then((response) => response.json())

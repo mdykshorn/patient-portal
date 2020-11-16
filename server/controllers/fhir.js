@@ -39,7 +39,6 @@ module.exports.getPatient = getPatient;
 
 async function getPatientById(req, res) {
   var pid = req.params.pid;
-
   Promise.all([
     client
       .read({
@@ -142,3 +141,44 @@ async function createObservation(req, res) {
 }
 
 module.exports.createObservation = createObservation;
+
+async function createPatient(inData) {
+  var patient = {
+    resourceType: "Patient",
+    identifier: [{ system: "iga-buddy", value: inData.firstname + inData.dob }],
+    name: [
+      {
+        family: inData.lastname,
+        given: inData.firstname,
+      },
+    ],
+    gender: inData.gender,
+    active: true,
+  };
+
+  return new Promise((resolve, reject) => {
+    if (inData.id) {
+      resolve(inData.id);
+    }
+    client
+      .create({
+        resourceType: "Patient",
+        body: JSON.stringify(patient),
+        options: {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      })
+      .then((data) => {
+        console.log("added patient");
+        resolve(data.id);
+      })
+      .catch((err) => {
+        console.log(JSON.stringify(err));
+        reject("0");
+      });
+  });
+}
+
+module.exports.createPatient = createPatient;
