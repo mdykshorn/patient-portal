@@ -66,7 +66,7 @@ export default function FormDialog(props) {
 
   const handleClose = () => {
     setOpen(false);
-    fetch("/api/observation", {
+    fetch("../api/observation", {
       method: "POST",
       headers: {
         Accept: "application/json",

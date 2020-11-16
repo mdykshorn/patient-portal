@@ -1,191 +1,184 @@
-codes = [
-  "8480-6", // BP systolic
-  "8462-4", // BP disys
-  "2160-0", // SCR
-  "48642-3", //GFR
-  "21482-5", // 24hour protein in urine
-];
+/*
+Functions to handle the api routes
 
-const observationMapping = {
-  "2160-0": {
-    units: "mg/dL",
-    name: "Creatinine [Mass/Vol]",
-  },
-  "48642-3": {
-    units: "mL/min/{1.73_m2}",
-    name: "GFR/BSA pr.non blk SerPlBld MDRD-ArV",
-  },
-  "8480-6": {
-    units: "mm[Hg]",
-    name: "Systolic blood pressure",
-  },
-  "8462-4": {
-    units: "mm[Hg]",
-    name: "Diastolic blood pressure",
-  },
-  "21482-5": {
-    units: "mg/dl",
-    name: "Protein (24H U) [Mass/Vol]",
-  },
-};
+*/
+const fhirKitClient = require("fhir-kit-client");
+const config = require("./../config/fhir");
+const client = new fhirKitClient(config);
+const fhir = require("../helpers/fhir");
 
-// helper function to get both systolic and diastolic bp
-function getBloodPressureValue(BPObservations, typeOfPressure) {
-  var formattedBPObservations = [];
-  BPObservations.forEach(function (observation) {
-    var BP = observation.component.find(function (component) {
-      return component.code.coding.find(function (coding) {
-        return coding.code == typeOfPressure;
+async function getPatient(req, res) {
+  console.log("getting patient");
+  if (req.query.name) {
+    client
+      .search({
+        resourceType: "Patient",
+        searchParams: { name: req.query.name },
+      })
+      .then((response) => {
+        const patients = response.entry
+          ? response.entry.map((obj) => {
+              return {
+                id: obj.resource.id,
+                name: `${obj.resource.name[0].given} ${obj.resource.name[0].family}`,
+                gender: obj.resource.gender,
+                birthDate: obj.resource.birthDate,
+                imageURL: "",
+              };
+            })
+          : [];
+
+        res.status(200).json(patients);
       });
-    });
-    if (BP) {
-      observation.valueQuantity = BP.valueQuantity;
-      formattedBPObservations.push(observation);
-    }
-  });
-
-  return getQuantityValueAndUnit(formattedBPObservations[0]);
+  } else {
+    res.status(200).json({ patients: [] });
+  }
 }
 
-module.exports = {
-  parseObservations: async function (observations) {
-    var filtered_observations = {
-      "2160-0": {
-        name: "Creatinine [Mass/Vol]",
-        data: [],
-        units: "mg/dL",
-        shortName: "Creatinine",
-        description: "Level of Serum Creatinine",
-      },
-      "48642-3": {
-        name: "GFR/BSA pr.non blk SerPlBld MDRD-ArV",
-        data: [],
-        units: "mL/min/{1.73_m2}",
-        shortName: "GFR",
-        description: "Kidney Function",
-      },
-      "8480-6": {
-        name: "Systolic blood pressure",
-        data: [],
-        units: "mm[Hg]",
-        shortName: "Systolic blood pressure",
-        description: "Systolic blood pressure",
-      },
-      "8462-4": {
-        name: "Diastolic blood pressure",
-        data: [],
-        units: "mm[Hg]",
-        shortName: "Diastolic blood pressure",
-        description: "Diastolic blood pressure",
-      },
-      "21482-5": {
-        name: "Protein (24H U) [Mass/Vol]",
-        data: [],
-        units: "mg/24hour",
-        shortName: "Protienuria",
-        description: "Protein in Urine",
-      },
-    };
+module.exports.getPatient = getPatient;
 
-    if (!observations) {
-      return filtered_observations;
-    }
-
-    observations.forEach((obj) => {
-      if (obj.resource.code.coding) {
-        if (
-          Object.keys(filtered_observations).includes(
-            obj.resource.code.coding[0].code
-          )
-        ) {
-          filtered_observations[obj.resource.code.coding[0].code].data.push([
-            obj.resource.effectiveDateTime,
-            obj.resource.valueQuantity.value,
-          ]);
+async function getPatientById(req, res) {
+  var pid = req.params.pid;
+  Promise.all([
+    client
+      .read({
+        resourceType: "Patient",
+        id: pid,
+      })
+      .then((response) => {
+        var name = "";
+        if (response.name) {
+          name = `${response.name[0].given} ${response.name[0].family}`;
         }
-      }
-    });
+        var patient = {
+          id: response.id,
+          name: name,
+          birthDate: response.birthDate,
+        };
 
-    Object.keys(filtered_observations).forEach((obs) => {
-      filtered_observations[obs]["data"].sort(function (a, b) {
-        // Turn your strings into dates, and then subtract them
-        // to get a value that is either negative, positive, or zero.
-        return new Date(b[0]) - new Date(a[0]);
-      });
-      filtered_observations[obs]["recent"] = filtered_observations[obs][
-        "data"
-      ].slice(0)[0];
-    });
-
-    return filtered_observations;
-  },
-  getMapping: function (observationCode) {
-    return observationMapping[observationCode];
-  },
-  /**
-   * prognosis info pulled from the following paper:
-   * https://www.uptodate.com/contents/treatment-and-prognosis-of-iga-nephropathy
-   * @param {*} recentObservations
-   */
-  getPrognosis: function (recentObservations) {
-    var prognosis = {
-      RiskFactor: 0,
-      Standing: "no records",
-      Percentile: "no records",
+        return patient;
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json({ patient: { id: req.params.pid } });
+      }),
+    client
+      .search({ resourceType: "Observation", searchParams: { subject: pid } })
+      .then((response) => {
+        return fhir.parseObservations(response.entry);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json({ patient: { id: req.params.pid } });
+      }),
+  ]).then((data) => {
+    var prognosis = fhir.getPrognosis(data[1]);
+    var data = {
+      patient: data[0],
+      observations: data[1],
+      prognosis: prognosis,
     };
+    res.status(200).json(data);
+  });
+}
 
-    var overalProg = 0;
+module.exports.getPatientById = getPatientById;
 
-    if (recentObservations["2160-0"].recent) {
-      var val = recentObservations["2160-0"].recent[1];
+async function createObservation(req, res) {
+  const obsType = req.body.observationType.obsType;
 
-      if (val > 1.68) {
-        prognosis["Percentile"] = 71;
-        overalProg += 10;
-      } else if (val > 1.26) {
-        prognosis["Percentile"] = 26;
-        overalProg += 5;
-      } else {
-        prognosis["Percentile"] = 2.5;
-      }
-    }
-    if (recentObservations["48642-3"].recent) {
-      var val = recentObservations["48642-3"].recent[1];
-      if (val < 60) {
-        overalProg += 20;
-      }
-    }
-    if (recentObservations["8480-6"].recent) {
-      var val = recentObservations["8480-6"].recent[1];
-      if (val > 140) {
-        overalProg += 10;
-      }
-    }
-    if (recentObservations["8462-4"].recent) {
-      var val = recentObservations["8462-4"].recent[1];
-      if (val > 90) {
-        overalProg += 10;
-      }
-    }
-    if (recentObservations["21482-5"].recent) {
-      var val = recentObservations["21482-5"].recent[1];
-      if (val > 1000) {
-        overalProg += 10;
-      } else if (val > 3500) {
-        overalProg += 30;
-      }
-    }
+  const quantity = {
+    value: req.body.value,
+    unit: fhir.getMapping(obsType.code),
+    system: "http://unitsofmeasure.org",
+  };
 
-    prognosis["RiskFactor"] = overalProg;
+  const newCode = {
+    coding: [
+      {
+        system: "http://loinc.org",
+        code: obsType.code,
+        display: obsType.value,
+      },
+    ],
+  };
 
-    if (overalProg < 20) {
-      prognosis["Standing"] = "good";
-    } else if (overalProg < 40) {
-      prognosis["Standing"] = "at risk";
-    } else {
-      prognosis["Standing"] = "seek medical attention";
+  const ref = {
+    reference: "Patient/" + req.body.patientId,
+    id: req.body.patientId,
+    type: "Patient",
+  };
+
+  const newObservation = {
+    resourceType: "Observation",
+    active: true,
+    code: newCode,
+    valueQuantity: quantity,
+    subject: ref,
+    effectiveDateTime: new Date(req.body.date).toISOString(),
+  };
+
+  client
+    .create({
+      resourceType: "Observation",
+      body: JSON.stringify(newObservation),
+      options: {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    })
+    .then((data) => {
+      console.log("added observation");
+      console.log(JSON.stringify(data));
+      res.status(200).json(data);
+    })
+    .catch((err) => {
+      console.log(JSON.stringify(err));
+      res.status(400).json({ patient: { id: req.params.pid } });
+    }),
+    res.status(400);
+}
+
+module.exports.createObservation = createObservation;
+
+async function createPatient(inData) {
+  var patient = {
+    resourceType: "Patient",
+    identifier: [{ system: "iga-buddy", value: inData.firstname + inData.dob }],
+    name: [
+      {
+        family: inData.lastname,
+        given: inData.firstname,
+      },
+    ],
+    gender: inData.gender,
+    active: true,
+  };
+
+  return new Promise((resolve, reject) => {
+    if (inData.id) {
+      resolve(inData.id);
     }
+    client
+      .create({
+        resourceType: "Patient",
+        body: JSON.stringify(patient),
+        options: {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      })
+      .then((data) => {
+        console.log("added patient");
+        resolve(data.id);
+      })
+      .catch((err) => {
+        console.log(JSON.stringify(err));
+        reject("0");
+      });
+  });
+}
 
-    return prognosis;
-  },
-};
+module.exports.createPatient = createPatient;

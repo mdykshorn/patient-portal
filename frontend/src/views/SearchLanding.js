@@ -55,7 +55,7 @@ class SearchLanding extends Component {
 
   searchPatientNames(value) {
     this.setState({ loading: true });
-    fetch(`api/patient?name=${value}`, {
+    fetch(`../api/patient?name=${value}`, {
       accept: "application/json",
     })
       .then((response) => response.json())
