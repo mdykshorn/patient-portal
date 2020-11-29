@@ -9,7 +9,7 @@ DataFrame.fromCSV(
   "https://raw.githubusercontent.com/mdykshorn/patient-portal/main/prognosis_model/cleaned_ckd_data.csv"
 ).then((df) => {
   // for dev only use small subset of df, remove for production
-  df = df.slice(0, 2);
+  // df = df.slice(0, 2);
 
   var features = df
     .select(
