@@ -41,6 +41,7 @@ function register(user) {
       password: md5(user.password),
       firstname: user.firstname,
       lastname: user.lastname,
+      dob: user.dob,
       patient_id: user.patient_id,
     }),
   };

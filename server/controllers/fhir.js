@@ -73,7 +73,7 @@ async function getPatientById(req, res) {
         res.status(400).json({ patient: { id: req.params.pid } });
       }),
   ]).then((data) => {
-    var prognosis = fhir.getPrognosis(data[1]);
+    var prognosis = fhir.getPrognosis(data[1], data[0].birthDate);
     var data = {
       patient: data[0],
       observations: data[1],
@@ -154,6 +154,7 @@ async function createPatient(inData) {
       },
     ],
     gender: inData.gender,
+    birthDate: new Date(inData.dob).toISOString(),
     active: true,
   };
 

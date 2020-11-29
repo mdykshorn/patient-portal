@@ -9,6 +9,7 @@ import {
   Divider,
   Link,
   Tooltip,
+  Button,
 } from "@material-ui/core";
 import { trackPromise } from "react-promise-tracker";
 import { LineChart } from "react-chartkick";
@@ -62,7 +63,9 @@ class PatientDetails extends Component {
       id: props.match.params.pid,
       patient: {},
       observations: {},
+      prognosis: {},
     };
+    this.addPrognosis = this.addPrognosis.bind(this);
   }
   componentDidMount() {
     trackPromise(
@@ -79,6 +82,25 @@ class PatientDetails extends Component {
         })
     );
   }
+
+  addPrognosis(e) {
+    fetch("../api/observation", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        patientId: this.state.id,
+        date: new Date().toISOString(),
+        observationType: { obsType: { code: "88240-7", value: "CKD" } },
+        value: this.state.prognosis.ModelScore,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+  }
+
   render() {
     const { classes } = this.props;
 
@@ -98,7 +120,7 @@ class PatientDetails extends Component {
                 Name: {this.state.patient.name}
               </Typography>
               <Typography className={classes.pos} color="textSecondary">
-                DOB: {this.state.patient.birthDate}
+                DOB: {new Date(this.state.patient.birthDate).toDateString()}
               </Typography>
               <Typography className={classes.pos} color="textSecondary">
                 Patient ID: {this.state.patient.id}
@@ -143,6 +165,87 @@ class PatientDetails extends Component {
                   className={this.state.prognosis.Standing}
                 >
                   Standing: {this.state.prognosis.Standing}
+                </Typography>
+              </Card>
+            </Grid>
+          ) : (
+            <div></div>
+          )}
+          {this.state.prognosis.Model == 0 ||
+          this.state.prognosis.Model == 1 ? (
+            <Grid item component="span" className={classes.alignBox}>
+              <Card className={classes.root}>
+                <Typography
+                  className={classes.title}
+                  color="textSecondary"
+                  gutterBottom
+                />
+                <Typography variant="h5" component="h2">
+                  CKD PredictionScore
+                </Typography>
+                <Typography className={classes.pos} color="textSecondary">
+                  Prognosis performed using ML model
+                </Typography>
+                <GaugeChart
+                  id="gauge-chart1"
+                  nrOfLevels={2}
+                  arcsLength={[0.5, 0.5]}
+                  percent={this.state.prognosis.Model}
+                  hideText={true}
+                />
+                <Button onClick={this.addPrognosis} color="primary">
+                  Add Prognosis to Health Record
+                </Button>
+              </Card>
+            </Grid>
+          ) : (
+            <div></div>
+          )}
+          {this.state.prognosis.SimpleModel == 0 ||
+          this.state.prognosis.SimpleModel == 1 ? (
+            <Grid item component="span" className={classes.alignBox}>
+              <Card className={classes.root}>
+                <Typography
+                  className={classes.title}
+                  color="textSecondary"
+                  gutterBottom
+                />
+                <Typography variant="h5" component="h2">
+                  CKD PredictionScore
+                </Typography>
+                <Typography className={classes.pos} color="textSecondary">
+                  Prognosis Using Simplified Model, Enter More records for more
+                  thourough Prognosis
+                </Typography>
+                <GaugeChart
+                  id="gauge-chart1"
+                  nrOfLevels={2}
+                  arcsLength={[0.5, 0.5]}
+                  percent={this.state.prognosis.SimpleModel}
+                  hideText={true}
+                />
+                <Button onClick={this.addPrognosis} color="primary">
+                  Add Prognosis to Health Record
+                </Button>
+              </Card>
+            </Grid>
+          ) : (
+            <div></div>
+          )}
+          {this.state.prognosis.ModelScore ? (
+            <Grid item component="span" className={classes.alignBox}>
+              <Card className={classes.root}>
+                <Typography
+                  className={classes.title}
+                  color="textSecondary"
+                  gutterBottom
+                />
+                <Typography variant="h5" component="h2">
+                  CKD PredictionScore
+                </Typography>
+                <Typography className={classes.pos} color="textSecondary">
+                  Not enough records to make Prediction. Add Observations to get
+                  a prognosis.
                 </Typography>
               </Card>
             </Grid>

@@ -108,5 +108,15 @@
     "low": 0,
     "high": 10000,
     "shortname": ""
+  },
+  "88240-7": {
+    "name": "Chronic kidney disease education panel",
+    "data": [],
+    "units": "",
+    "shortName": "CKD",
+    "description": "CKD Discussion",
+    "low": 0,
+    "high": 0,
+    "shortname": ""
   }
 }

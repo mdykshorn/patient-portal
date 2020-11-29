@@ -20,13 +20,25 @@ async function setupModel() {
     var features = df
       .select("age", "bp", "sg", "al", "bgr", "sc", "sod", "hemo", "htn")
       .toArray();
+
+    features = features.map(function (elem) {
+      return elem.map(function (elem2) {
+        return parseFloat(elem2);
+      });
+    });
+
     var labels = df.select("class").toArray();
+
+    labels = labels.map(function (elem) {
+      return parseInt(elem);
+    });
 
     console.log("Data Loaded");
 
     randomForest.fit(features, labels);
     console.log("Model Trained");
 
+    console.log(features[0]);
     const result = randomForest.predict([features[0]]);
     console.log("Test Prediction");
     console.log(result);
@@ -41,14 +53,24 @@ async function setupModel() {
 
     console.log(df.listColumns());
     var features = df.select("age", "bp", "sg", "sc", "htn").toArray();
+    features = features.map(function (elem) {
+      return elem.map(function (elem2) {
+        return parseFloat(elem2);
+      });
+    });
+
     var labels = df.select("class").toArray();
+
+    labels = labels.map(function (elem) {
+      return parseInt(elem);
+    });
 
     console.log("Simple Data Loaded");
 
-    randomForest.fit(features, labels);
+    simpleRandomForest.fit(features, labels);
     console.log("Simple Model Trained");
 
-    const result = randomForest.predict([features[0]]);
+    const result = simpleRandomForest.predict([features[0]]);
     console.log("Simple Test Prediction");
     console.log(result);
   });

@@ -86,36 +86,12 @@ module.exports = {
    * https://www.uptodate.com/contents/treatment-and-prognosis-of-iga-nephropathy
    * @param {*} recentObservations
    */
-  getPrognosis: function (recentObservations) {
+  getPrognosis: function (recentObservations, birthDate) {
     var prognosis = {
       RiskFactor: 0,
       Standing: "no records",
       Percentile: "no records",
     };
-
-    // Example call to ML model
-    var testObs = [
-      "48.0",
-      "80.0",
-      "1.020",
-      "0",
-      "121.0",
-      "1.2",
-      "0.0",
-      "15.4",
-      "7800.0",
-      "5.2",
-      "0",
-      "0",
-    ];
-    var ckd = prognosisModel.getPrognosis(testObs);
-
-    // Example call to ML model
-    var testObsSimp = ["48.0", "80.0", "1.020", "1.2", "0"];
-    var ckdSimple = prognosisModel.getPrognosis(testObsSimp);
-
-    prognosis["Model"] = ckd[0];
-    prognosis["SimpleModel"] = ckdSimple[0];
 
     var overalProg = 0;
 
@@ -167,6 +143,78 @@ module.exports = {
       prognosis["Standing"] = "at risk";
     } else {
       prognosis["Standing"] = "seek medical attention";
+    }
+
+    var age;
+    var htn;
+
+    // compute age and hypertension
+    if (birthDate) {
+      var ageDifMs = Date.now() - new Date(birthDate).getTime();
+      var ageDate = new Date(ageDifMs);
+      age = Math.abs(ageDate.getUTCFullYear() - 1969);
+    }
+    if (recentObservations["8462-4"].recent) {
+      htn =
+        recentObservations["8462-4"].recent > recentObservations["8462-4"].high
+          ? 1
+          : 0;
+    }
+
+    // determine if there are enough observations to use one of the models
+    if (
+      age &&
+      recentObservations["2160-0"].recent &&
+      recentObservations["8462-4"].recent &&
+      recentObservations["2965-2"].recent &&
+      recentObservations["30003-8"].recent &&
+      recentObservations["2350-7"].recent &&
+      recentObservations["32546-4"].recent &&
+      recentObservations["21525-1"].recent &&
+      recentObservations["30350-3"].recent
+    ) {
+      console.log("Full Model");
+
+      var obsArr = [
+        parseFloat(age),
+        parseFloat(recentObservations["8462-4"].recent[1]), // bp
+        parseFloat(recentObservations["2965-2"].recent[1]), // sg
+        parseFloat(recentObservations["30003-8"].recent[1]), // al
+        parseFloat(recentObservations["2350-7"].recent[1]), // su
+        parseFloat(recentObservations["32546-4"].recent[1]), // bgr
+        parseFloat(recentObservations["2160-0"].recent[1]), // sc
+        parseFloat(recentObservations["21525-1"].recent[1]), // sod
+        parseFloat(recentObservations["30350-3"].recent[1]), // hemo
+        parseFloat(htn),
+      ]; // htn
+
+      var ckd = prognosisModel.getPrognosis(obsArr);
+      prognosis["Model"] = parseInt(ckd);
+      prognosis["ModelScore"] = parseInt(ckd);
+    } else if (
+      age &&
+      recentObservations["2160-0"].recent &&
+      recentObservations["8462-4"].recent &&
+      recentObservations["2965-2"].recent
+    ) {
+      console.log("Simple Model");
+
+      var obsArr = [
+        parseFloat(age),
+        parseFloat(recentObservations["8462-4"].recent[1]), // bp
+        parseFloat(recentObservations["2965-2"].recent[1]), // sg
+        parseFloat(recentObservations["2160-0"].recent[1]), // sc
+        parseFloat(htn),
+      ]; // htn
+
+      console.log(obsArr);
+
+      var ckd = prognosisModel.getSimplePrognosis(obsArr);
+      console.log(ckd);
+      prognosis["SimpleModel"] = parseInt(ckd);
+      prognosis["ModelScore"] = parseInt(ckd);
+    } else {
+      console.log("Not enough Data for ML Model");
     }
 
     return prognosis;
