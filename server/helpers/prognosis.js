@@ -17,7 +17,7 @@ async function setupModel() {
     "https://raw.githubusercontent.com/mdykshorn/patient-portal/main/prognosis_model/cleaned_ckd_data.csv"
   ).then((df) => {
     // uncomment for dev, remove for prod
-    df = df.slice(200, 300);
+    df = df.slice(240, 260);
 
     var features = df
       .select("age", "bp", "sg", "al", "bgr", "sc", "sod", "hemo", "htn")
@@ -50,7 +50,7 @@ async function setupModel() {
   DataFrame.fromCSV(
     "https://raw.githubusercontent.com/mdykshorn/patient-portal/main/prognosis_model/cleaned_ckd_simple_data.csv"
   ).then((df) => {
-    df = df.slice(200, 300);
+    df = df.slice(240, 260);
     var features = df.select("age", "bp", "sg", "sc", "htn").toArray();
     features = features.map(function (elem) {
       return elem.map(function (elem2) {
