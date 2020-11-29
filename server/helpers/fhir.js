@@ -153,7 +153,7 @@ module.exports = {
     ];
     var ckd = prognosisModel.getPrognosis(testObs);
 
-    console.log("Prediction", ckd);
+    prognosis["Model"] = ckd[0];
 
     var overalProg = 0;
 

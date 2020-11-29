@@ -9,12 +9,10 @@ import {
   Toolbar,
   Link,
 } from "@material-ui/core";
-import { Link as RouterLink } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { userActions } from "./../actions";
 import { withStyles } from "@material-ui/core/styles";
-import md5 from "md5";
 
 const styles = (theme) => ({
   "login-form": {

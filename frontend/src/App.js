@@ -11,12 +11,7 @@ import { Login } from "./views/Login";
 import { Register } from "./views/Register";
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
-    const { alert } = this.props;
     return (
       <Router history={history}>
         <Switch>
