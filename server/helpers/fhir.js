@@ -1,3 +1,5 @@
+const prognosisModel = require("./../helpers/prognosis");
+
 codes = [
   "8480-6", // BP systolic
   "8462-4", // BP disys
@@ -133,6 +135,25 @@ module.exports = {
       Standing: "no records",
       Percentile: "no records",
     };
+
+    // Example call to ML model
+    var testObs = [
+      "48.0",
+      "80.0",
+      "1.020",
+      "0",
+      "121.0",
+      "1.2",
+      "0.0",
+      "15.4",
+      "7800.0",
+      "5.2",
+      "0",
+      "0",
+    ];
+    var ckd = prognosisModel.getPrognosis(testObs);
+
+    console.log("Prediction", ckd);
 
     var overalProg = 0;
 
