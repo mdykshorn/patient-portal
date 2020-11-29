@@ -9,6 +9,7 @@ import {
   Tooltip,
 } from "@material-ui/core";
 import HomeIcon from "@material-ui/icons/Home";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import SearchIcon from "@material-ui/icons/Search";
 import MenuIcon from "@material-ui/icons/Menu";
 import { Link, withRouter } from "react-router-dom";
@@ -156,6 +157,17 @@ class NavBar extends Component {
               />
             </div>
             <RecordInput match={this.props.match} />
+            <Tooltip title="Logout">
+              <IconButton
+                className={classes.iconButton}
+                color="inherit"
+                aria-label="home"
+                component={Link}
+                to={`/`}
+              >
+                <ExitToAppIcon />
+              </IconButton>
+            </Tooltip>
           </Toolbar>
         </AppBar>
       </div>

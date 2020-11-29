@@ -6,6 +6,7 @@ const fhirKitClient = require("fhir-kit-client");
 const config = require("./../config/fhir");
 const client = new fhirKitClient(config);
 const fhir = require("../helpers/fhir");
+const prognosis = require("./../helpers/prognosis");
 
 async function getPatient(req, res) {
   console.log("getting patient");

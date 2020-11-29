@@ -9,7 +9,6 @@ import {
   Toolbar,
   Link,
 } from "@material-ui/core";
-import { Link as RouterLink } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { userActions } from "./../actions";
@@ -187,6 +186,11 @@ class Register extends React.Component {
                         >
                           Submit
                         </Button>
+                      </Grid>
+                      <Grid item>
+                        <Link href="/login" variant="body2">
+                          I have an Account
+                        </Link>
                       </Grid>
                     </Grid>
                   </form>

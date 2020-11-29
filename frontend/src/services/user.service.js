@@ -1,4 +1,3 @@
-import { authHeader } from "./../helpers";
 import md5 from "md5";
 
 export const userService = {

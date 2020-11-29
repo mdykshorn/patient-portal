@@ -13,6 +13,8 @@ import {
 import { trackPromise } from "react-promise-tracker";
 import { LineChart } from "react-chartkick";
 import "chart.js";
+import GaugeChart from "react-gauge-chart";
+
 var randomColor = require("randomcolor");
 
 const useStyles = makeStyles({
@@ -124,8 +126,15 @@ class PatientDetails extends Component {
                   </Link>
                 </Typography>
                 <Typography className={classes.pos} color="textSecondary">
-                  Risk (0-80): {this.state.prognosis.RiskFactor}
+                  Risk:
                 </Typography>
+                <GaugeChart
+                  id="gauge-chart1"
+                  nrOfLevels={4}
+                  arcsLength={[0.15, 0.25, 0.4, 0.2]}
+                  percent={this.state.prognosis.RiskFactor / 100}
+                  hideText={true}
+                />
                 <Typography className={classes.pos} color="textSecondary">
                   Odds of ESRD in 10 Years: {this.state.prognosis.Percentile} %
                 </Typography>
@@ -154,7 +163,7 @@ class PatientDetails extends Component {
                 {Object.keys(this.state.observations).map((obs, index) => {
                   var codeData = this.state.observations[obs];
                   return codeData.recent ? (
-                    <Tooltip title={codeData.description}>
+                    <Tooltip key={index} title={codeData.description}>
                       <Typography
                         variant="body2"
                         component="h2"
@@ -166,7 +175,7 @@ class PatientDetails extends Component {
                       </Typography>
                     </Tooltip>
                   ) : (
-                    <Tooltip title={codeData.description}>
+                    <Tooltip key={index} title={codeData.description}>
                       <Typography
                         variant="body2"
                         component="h2"
