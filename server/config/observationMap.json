@@ -1,0 +1,122 @@
+{
+  "2160-0": {
+    "name": "Creatinine [Mass/Vol]",
+    "data": [],
+    "units": "mg/dL",
+    "shortName": "Creatinine",
+    "description": "Level of Serum Creatinine",
+    "low": 0,
+    "high": 1.5,
+    "shortname": "sc"
+  },
+  "48642-3": {
+    "name": "GFR/BSA pr.non blk SerPlBld MDRD-ArV",
+    "data": [],
+    "units": "mL/min/{1.73_m2}",
+    "shortName": "GFR",
+    "description": "Kidney Function",
+    "low": 60,
+    "high": 10000,
+    "shortname": ""
+  },
+  "8480-6": {
+    "name": "Systolic blood pressure",
+    "data": [],
+    "units": "mm[Hg]",
+    "shortName": "Systolic blood pressure",
+    "description": "Systolic blood pressure",
+    "low": 90,
+    "high": 120,
+    "shortname": ""
+  },
+  "8462-4": {
+    "name": "Diastolic blood pressure",
+    "data": [],
+    "units": "mm[Hg]",
+    "shortName": "Diastolic blood pressure",
+    "description": "Diastolic blood pressure",
+    "low": 60,
+    "high": 80,
+    "shortname": "bp"
+  },
+  "2965-2": {
+    "name": "Specific gravity (U) [Rel density]",
+    "data": [],
+    "units": "Rel density",
+    "shortName": "Specific Gravity",
+    "description": "Specific Gravity of Urine",
+    "low": 0,
+    "high": 1.025,
+    "shortname": "sg"
+  },
+  "30003-8": {
+    "name": "Microalbumin [Mass/volume] in 24 hour Urine",
+    "data": [],
+    "units": "mg/dL",
+    "shortName": "Albumin",
+    "description": "Albumin in Urine",
+    "low": 0,
+    "high": 5,
+    "shortname": "al"
+  },
+  "2350-7": {
+    "name": "Glucose [Mass/volume] in Urine",
+    "data": [],
+    "units": "mg/dL",
+    "shortName": "Glucose",
+    "description": "Glucose in Urine",
+    "low": 0,
+    "high": 5,
+    "shortname": "su"
+  },
+  "32546-4": {
+    "name": "Glucose-6-Phosphate dehydrogenase [Enzymatic activity/mass] in Red Blood Cells",
+    "data": [],
+    "units": "U/g{Hb}",
+    "shortName": "Glucose-6-Phosphate",
+    "description": "Blood Glucose",
+    "low": 0,
+    "high": 490,
+    "shortname": "bgr"
+  },
+  "21525-1": {
+    "name": "Sodium [Moles/volume] in 24 hour Urine",
+    "data": [],
+    "units": "mol/L",
+    "shortName": "Sodium",
+    "description": "Sodium in 24 hour urine",
+    "low": 0,
+    "high": 163,
+    "shortname": "sod"
+  },
+  "30350-3": {
+    "name": "Hemoglobin [Mass/volume] in Venous blood",
+    "data": [],
+    "units": "g/L",
+    "shortName": "Hemoglobin",
+    "description": "Hemoglobin in Blood",
+    "low": 12.1,
+    "high": 17.0,
+    "shortname": "hemo"
+  },
+  "21482-5": {
+    "name": "Protein (24H U) [Mass/Vol]",
+    "data": [],
+    "units": "mg/24hour",
+    "shortName": "Protienuria",
+    "description": "Protein in Urine",
+    "low": 0,
+    "high": 10000,
+    "shortname": ""
+  },
+  "88240-7": {
+    "name": "Chronic kidney disease education panel",
+    "data": [],
+    "units": "",
+    "shortName": "CKD",
+    "description": "CKD Discussion",
+    "low": 0,
+    "high": 0,
+    "shortname": ""
+  }
+}

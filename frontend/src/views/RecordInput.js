@@ -11,12 +11,36 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
+import Typography from "@material-ui/core/Typography";
 
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
+
+// get observation Mapping
+var observationTypes = [];
+fetch(
+  "https://raw.githubusercontent.com/mdykshorn/patient-portal/main/server/config/observationMap.json"
+)
+  .then((d) => d.json())
+  .then((d) => {
+    for (var key in d) {
+      if (key == "88240-7") {
+        continue;
+      }
+
+      var tempObs = {
+        code: key,
+        value: d[key].shortName,
+        low: d[key].low,
+        high: d[key].high,
+      };
+
+      observationTypes.push(tempObs); // Push the key's value on the array
+    }
+  });
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -31,29 +55,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
 }));
-
-const observationTypes = [
-  {
-    code: "2160-0",
-    value: "Creatinine [Mass/Vol]",
-  },
-  {
-    code: "48642-3",
-    value: "GFR/BSA pr.non blk SerPlBld MDRD-ArV",
-  },
-  {
-    value: "Systolic blood pressure",
-    code: "8480-6",
-  },
-  {
-    code: "8462-4",
-    value: "Diastolic blood pressure",
-  },
-  {
-    code: "21482-5",
-    value: "Protein (24H U) [Mass/Vol]",
-  },
-];
 
 export default function FormDialog(props) {
   const classes = useStyles();
@@ -80,8 +81,8 @@ export default function FormDialog(props) {
       }),
     })
       .then((response) => response.json())
-      .then((data) => console.log(data))
-      .then(window.location.reload());
+      .then((data) => console.log(data));
+    // .then(window.location.reload());
   };
 
   const [patientId, setPatientId] = React.useState(
@@ -158,7 +159,7 @@ export default function FormDialog(props) {
             >
               {observationTypes.map((obs, index) => (
                 <MenuItem value={obs} key={index}>
-                  {obs.value}
+                  {obs.value} ({obs.low}/{obs.high})
                 </MenuItem>
               ))}
             </Select>
@@ -172,6 +173,9 @@ export default function FormDialog(props) {
               helperText="Observation Value"
             />
           </FormControl>
+          <Typography variant="body2" component="h2" color="textSecondary">
+            Please refresh page after wating a few minutes for server processing
+          </Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">

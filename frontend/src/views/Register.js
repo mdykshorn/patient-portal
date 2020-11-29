@@ -10,7 +10,11 @@ import {
   Link,
 } from "@material-ui/core";
 import { connect } from "react-redux";
-
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
 import { userActions } from "./../actions";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -38,7 +42,7 @@ class Register extends React.Component {
       email: "",
       password: "",
       patient_id: "",
-
+      dob: new Date(),
       submitted: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -47,13 +51,21 @@ class Register extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     this.setState({ submitted: true });
-    const { email, password, firstname, lastname, patient_id } = this.state;
+    const {
+      email,
+      password,
+      firstname,
+      lastname,
+      dob,
+      patient_id,
+    } = this.state;
     if (email && password) {
       this.props.register({
         email: email,
         password: password,
         firstname: firstname,
         lastname: lastname,
+        dob: dob,
         patient_id: patient_id,
       });
     }
@@ -161,6 +173,28 @@ class Register extends React.Component {
                           }
                           required
                         />
+                      </Grid>
+                      <Grid item>
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                          <KeyboardDatePicker
+                            disableToolbar
+                            variant="inline"
+                            format="MM/dd/yyyy"
+                            margin="normal"
+                            id="date-picker-inline"
+                            name="dob"
+                            label="Date of Birth"
+                            value={this.state.dob}
+                            onChange={(event) =>
+                              this.setState({
+                                [event.target.name]: event.target.value,
+                              })
+                            }
+                            KeyboardButtonProps={{
+                              "aria-label": "change date",
+                            }}
+                          />
+                        </MuiPickersUtilsProvider>
                       </Grid>
                       <Grid item>
                         <TextField
