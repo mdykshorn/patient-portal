@@ -1,12 +1,5 @@
 const prognosisModel = require("./../helpers/prognosis");
-
-codes = [
-  "8480-6", // BP systolic
-  "8462-4", // BP disys
-  "2160-0", // SCR
-  "48642-3", //GFR
-  "21482-5", // 24hour protein in urine
-];
+const loincData = require("./../config/observationMap");
 
 const observationMapping = {
   "2160-0": {
@@ -51,43 +44,7 @@ function getBloodPressureValue(BPObservations, typeOfPressure) {
 
 module.exports = {
   parseObservations: async function (observations) {
-    var filtered_observations = {
-      "2160-0": {
-        name: "Creatinine [Mass/Vol]",
-        data: [],
-        units: "mg/dL",
-        shortName: "Creatinine",
-        description: "Level of Serum Creatinine",
-      },
-      "48642-3": {
-        name: "GFR/BSA pr.non blk SerPlBld MDRD-ArV",
-        data: [],
-        units: "mL/min/{1.73_m2}",
-        shortName: "GFR",
-        description: "Kidney Function",
-      },
-      "8480-6": {
-        name: "Systolic blood pressure",
-        data: [],
-        units: "mm[Hg]",
-        shortName: "Systolic blood pressure",
-        description: "Systolic blood pressure",
-      },
-      "8462-4": {
-        name: "Diastolic blood pressure",
-        data: [],
-        units: "mm[Hg]",
-        shortName: "Diastolic blood pressure",
-        description: "Diastolic blood pressure",
-      },
-      "21482-5": {
-        name: "Protein (24H U) [Mass/Vol]",
-        data: [],
-        units: "mg/24hour",
-        shortName: "Protienuria",
-        description: "Protein in Urine",
-      },
-    };
+    var filtered_observations = loincData;
 
     if (!observations) {
       return filtered_observations;
@@ -153,7 +110,12 @@ module.exports = {
     ];
     var ckd = prognosisModel.getPrognosis(testObs);
 
+    // Example call to ML model
+    var testObsSimp = ["48.0", "80.0", "1.020", "1.2", "0"];
+    var ckdSimple = prognosisModel.getPrognosis(testObsSimp);
+
     prognosis["Model"] = ckd[0];
+    prognosis["SimpleModel"] = ckdSimple[0];
 
     var overalProg = 0;
 

@@ -18,6 +18,15 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 
+var observationMapping = fetch(`observationMapping.json`)
+  .then((d) => {
+    console.log(d);
+  })
+  .then((d) => d.json())
+  .then((d) => {
+    console.log(d);
+  });
+
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
@@ -32,28 +41,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const observationTypes = [
-  {
-    code: "2160-0",
-    value: "Creatinine [Mass/Vol]",
-  },
-  {
-    code: "48642-3",
-    value: "GFR/BSA pr.non blk SerPlBld MDRD-ArV",
-  },
-  {
-    value: "Systolic blood pressure",
-    code: "8480-6",
-  },
-  {
-    code: "8462-4",
-    value: "Diastolic blood pressure",
-  },
-  {
-    code: "21482-5",
-    value: "Protein (24H U) [Mass/Vol]",
-  },
-];
+const observationTypes = observationMapping.forEach((item) => {
+  console.log(item);
+});
+
+// const observationTypes = [
+//   {
+//     code: "2160-0",
+//     value: "Creatinine [Mass/Vol]",
+//   },
+//   {
+//     code: "48642-3",
+//     value: "GFR/BSA pr.non blk SerPlBld MDRD-ArV",
+//   },
+//   {
+//     value: "Systolic blood pressure",
+//     code: "8480-6",
+//   },
+//   {
+//     code: "8462-4",
+//     value: "Diastolic blood pressure",
+//   },
+//   {
+//     code: "21482-5",
+//     value: "Protein (24H U) [Mass/Vol]",
+//   },
+// ];
 
 export default function FormDialog(props) {
   const classes = useStyles();
