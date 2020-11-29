@@ -10,6 +10,9 @@ const randomForest = new RandomForestClassifier();
 const simpleRandomForest = new RandomForestClassifier();
 
 async function setupModel() {
+  if (randomForest.trees.length > 0) {
+    return;
+  }
   DataFrame.fromCSV(
     "https://raw.githubusercontent.com/mdykshorn/patient-portal/main/prognosis_model/cleaned_ckd_data.csv"
   ).then((df) => {
