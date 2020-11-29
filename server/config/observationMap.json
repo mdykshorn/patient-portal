@@ -46,7 +46,7 @@
     "shortName": "Specific Gravity",
     "description": "Specific Gravity of Urine",
     "low": 0,
-    "high": 10000,
+    "high": 1.025,
     "shortname": "sg"
   },
   "30003-8": {
@@ -56,7 +56,7 @@
     "shortName": "Albumin",
     "description": "Albumin in Urine",
     "low": 0,
-    "high": 10000,
+    "high": 5,
     "shortname": "al"
   },
   "2350-7": {
@@ -66,7 +66,7 @@
     "shortName": "Glucose",
     "description": "Glucose in Urine",
     "low": 0,
-    "high": 10000,
+    "high": 5,
     "shortname": "su"
   },
   "32546-4": {
@@ -76,7 +76,7 @@
     "shortName": "Glucose-6-Phosphate",
     "description": "Blood Glucose",
     "low": 0,
-    "high": 10000,
+    "high": 490,
     "shortname": "bgr"
   },
   "21525-1": {
@@ -86,7 +86,7 @@
     "shortName": "Sodium",
     "description": "Sodium in 24 hour urine",
     "low": 0,
-    "high": 10000,
+    "high": 163,
     "shortname": "sod"
   },
   "30350-3": {
@@ -98,5 +98,15 @@
     "low": 12.1,
     "high": 17.0,
     "shortname": "hemo"
+  },
+  "21482-5": {
+    "name": "Protein (24H U) [Mass/Vol]",
+    "data": [],
+    "units": "mg/24hour",
+    "shortName": "Protienuria",
+    "description": "Protein in Urine",
+    "low": 0,
+    "high": 10000,
+    "shortname": ""
   }
 }
