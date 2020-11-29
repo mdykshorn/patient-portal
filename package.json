@@ -8,6 +8,7 @@
     "express": "^4.16.3",
     "fhir-kit-client": "^1.0.0",
     "machinelearn": "^2.1.5",
+    "machinelearn-node": "0.0.2",
     "md5": "^2.3.0",
     "randomcolor": "^0.6.2",
     "sqlite3": "^5.0.0"
