@@ -152,13 +152,10 @@ module.exports = {
     if (birthDate) {
       var ageDifMs = Date.now() - new Date(birthDate).getTime();
       var ageDate = new Date(ageDifMs);
-      age = Math.abs(ageDate.getUTCFullYear() - 1969);
+      age = Math.abs(ageDate.getUTCFullYear() - 1970);
     }
     if (recentObservations["8462-4"].recent) {
-      htn =
-        recentObservations["8462-4"].recent > recentObservations["8462-4"].high
-          ? 1
-          : 0;
+      htn = recentObservations["8462-4"].recent[1] > 70 ? 1 : 0;
     }
 
     // determine if there are enough observations to use one of the models
@@ -187,6 +184,8 @@ module.exports = {
         parseFloat(recentObservations["30350-3"].recent[1]), // hemo
         parseFloat(htn),
       ]; // htn
+
+      console.log(obsArr);
 
       var ckd = prognosisModel.getPrognosis(obsArr);
       prognosis["Model"] = parseInt(ckd);

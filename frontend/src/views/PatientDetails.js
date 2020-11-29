@@ -96,9 +96,7 @@ class PatientDetails extends Component {
         observationType: { obsType: { code: "88240-7", value: "CKD" } },
         value: this.state.prognosis.ModelScore,
       }),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data));
+    });
   }
 
   render() {
@@ -232,7 +230,7 @@ class PatientDetails extends Component {
           ) : (
             <div></div>
           )}
-          {this.state.prognosis.ModelScore ? (
+          {this.state.prognosis.ModelScore == null ? (
             <Grid item component="span" className={classes.alignBox}>
               <Card className={classes.root}>
                 <Typography

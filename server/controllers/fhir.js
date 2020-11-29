@@ -173,7 +173,7 @@ async function createPatient(inData) {
         },
       })
       .then((data) => {
-        console.log("added patient");
+        console.log("added patient; ID:", data.id);
         resolve(data.id);
       })
       .catch((err) => {
