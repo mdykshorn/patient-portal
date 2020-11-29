@@ -4,7 +4,7 @@ const fhir = require("./helpers/fhir");
 var bodyParser = require("body-parser");
 const path = require("path");
 const cluster = require("cluster");
-const prognosisModel = require("./helpers/prognosis");
+prognosisModel = require("./helpers/prognosis");
 const numCPUs = require("os").cpus().length;
 
 const isDev = process.env.NODE_ENV !== "production";
@@ -46,11 +46,13 @@ if (!isDev && cluster.isMaster) {
   });
 
   app.listen(PORT, function () {
-    prognosisModel.setupModel();
     console.error(
       `Node ${
         isDev ? "dev server" : "cluster worker " + process.pid
       }: listening on port ${PORT}`
     );
   });
+
+  // Build model after server starts
+  prognosisModel.setupModel();
 }
