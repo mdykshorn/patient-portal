@@ -155,7 +155,7 @@ module.exports = {
       age = Math.abs(ageDate.getUTCFullYear() - 1970);
     }
     if (recentObservations["8462-4"].recent) {
-      htn = recentObservations["8462-4"].recent[1] > 70 ? 1 : 0;
+      htn = recentObservations["8462-4"].recent[1] >= 80 ? 1 : 0;
     }
 
     // determine if there are enough observations to use one of the models

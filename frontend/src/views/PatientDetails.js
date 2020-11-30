@@ -209,11 +209,11 @@ class PatientDetails extends Component {
                   gutterBottom
                 />
                 <Typography variant="h5" component="h2">
-                  CKD PredictionScore
+                  CKD SimplePredictionScore
                 </Typography>
                 <Typography className={classes.pos} color="textSecondary">
-                  Prognosis Using Simplified Model, Enter More records for more
-                  thourough Prognosis
+                  Prognosis using Simplified Model, Please enter additional
+                  observations for more confidence
                 </Typography>
                 <GaugeChart
                   id="gauge-chart1"
@@ -242,8 +242,9 @@ class PatientDetails extends Component {
                   CKD PredictionScore
                 </Typography>
                 <Typography className={classes.pos} color="textSecondary">
-                  Not enough records to make Prediction. Add Observations to get
-                  a prognosis.
+                  Please enter additional Observations to recieve a
+                  PredictionScore. At a minimum you must enter Creatinine, Blood
+                  Pressure, and Specific Gravity
                 </Typography>
               </Card>
             </Grid>
