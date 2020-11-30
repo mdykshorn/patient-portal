@@ -32,19 +32,19 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
           var insert =
             "INSERT INTO user (name, email, password, patient_id) VALUES (?,?,?,?)";
           db.run(insert, [
-            "admin",
-            "admin@example.com",
-            md5("admin123456"),
+            "Dexter Morgan",
+            "dexter@example.com",
+            md5("test123"),
             "Patient-BD-Pa5",
           ]);
           db.run(insert, [
-            "user",
-            "user@example.com",
-            md5("user123456"),
-            "Patient-BD-Pa5",
+            "Tyler Harris",
+            "tyler@example.com",
+            md5("test123"),
+            "1564958",
           ]);
           db.run(insert, [
-            "Brian Green",
+            "Brian Greenwald",
             "bgreen@test.com",
             md5("test123"),
             "512998",

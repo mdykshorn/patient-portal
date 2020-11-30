@@ -40,10 +40,10 @@ async function setupModel() {
     randomForest.fit(features, labels);
     console.log("Model Trained");
 
-    features.forEach((f) => {
-      var result = randomForest.predict([f]);
-      console.log(f, result);
-    });
+    // features.forEach((f) => {
+    //   var result = randomForest.predict([f]);
+    //   console.log(f, result);
+    // });
   });
 
   // Simple model

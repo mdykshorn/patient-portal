@@ -27,7 +27,7 @@ fetch(
   .then((d) => d.json())
   .then((d) => {
     for (var key in d) {
-      if (key == "88240-7") {
+      if (key === "88240-7") {
         continue;
       }
 
