@@ -40,6 +40,7 @@ module.exports.getPatient = getPatient;
 
 async function getPatientById(req, res) {
   var pid = req.params.pid;
+  console.log("Getting Observations for patient:", pid);
   Promise.all([
     client
       .read({
