@@ -5,7 +5,7 @@ var bodyParser = require("body-parser");
 const path = require("path");
 const cluster = require("cluster");
 prognosisModel = require("./helpers/prognosis");
-const numCPUs = require("os").cpus().length;
+const numCPUs = 1;
 
 const isDev = process.env.NODE_ENV !== "production";
 const PORT = process.env.PORT || 5000;
