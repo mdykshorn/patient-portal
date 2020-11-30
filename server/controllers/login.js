@@ -69,6 +69,7 @@ async function register(req, res) {
       password: req.body.password,
       patient_id: patient_id,
     };
+    console.log("patient id", patient_id);
 
     var sql =
       "INSERT INTO user (name, email, password, patient_id) VALUES (?,?,?,?)";

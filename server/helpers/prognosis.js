@@ -10,13 +10,15 @@ const randomForest = new RandomForestClassifier();
 const simpleRandomForest = new RandomForestClassifier();
 
 async function setupModel() {
+  if (randomForest.trees.length > 0) {
+    return;
+  }
   DataFrame.fromCSV(
     "https://raw.githubusercontent.com/mdykshorn/patient-portal/main/prognosis_model/cleaned_ckd_data.csv"
   ).then((df) => {
     // uncomment for dev, remove for prod
-    df = df.slice(0, 2);
+    df = df.slice(240, 260);
 
-    console.log(df.listColumns());
     var features = df
       .select("age", "bp", "sg", "al", "bgr", "sc", "sod", "hemo", "htn")
       .toArray();
@@ -38,20 +40,17 @@ async function setupModel() {
     randomForest.fit(features, labels);
     console.log("Model Trained");
 
-    console.log(features[0]);
-    const result = randomForest.predict([features[0]]);
-    console.log("Test Prediction");
-    console.log(result);
+    // features.forEach((f) => {
+    //   var result = randomForest.predict([f]);
+    //   console.log(f, result);
+    // });
   });
 
   // Simple model
   DataFrame.fromCSV(
     "https://raw.githubusercontent.com/mdykshorn/patient-portal/main/prognosis_model/cleaned_ckd_simple_data.csv"
   ).then((df) => {
-    // uncomment for dev, remove for prod
-    df = df.slice(0, 2);
-
-    console.log(df.listColumns());
+    df = df.slice(240, 260);
     var features = df.select("age", "bp", "sg", "sc", "htn").toArray();
     features = features.map(function (elem) {
       return elem.map(function (elem2) {
@@ -69,10 +68,6 @@ async function setupModel() {
 
     simpleRandomForest.fit(features, labels);
     console.log("Simple Model Trained");
-
-    const result = simpleRandomForest.predict([features[0]]);
-    console.log("Simple Test Prediction");
-    console.log(result);
   });
 }
 

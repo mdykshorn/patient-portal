@@ -96,9 +96,7 @@ class PatientDetails extends Component {
         observationType: { obsType: { code: "88240-7", value: "CKD" } },
         value: this.state.prognosis.ModelScore,
       }),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data));
+    });
   }
 
   render() {
@@ -150,13 +148,17 @@ class PatientDetails extends Component {
                 <Typography className={classes.pos} color="textSecondary">
                   Risk:
                 </Typography>
-                <GaugeChart
-                  id="gauge-chart1"
-                  nrOfLevels={4}
-                  arcsLength={[0.15, 0.25, 0.4, 0.2]}
-                  percent={this.state.prognosis.RiskFactor / 100}
-                  hideText={true}
-                />
+                {this.state.prognosis.RiskFactor > 0 ? (
+                  <GaugeChart
+                    id="gauge-chart1"
+                    nrOfLevels={4}
+                    arcsLength={[0.15, 0.25, 0.4, 0.2]}
+                    percent={this.state.prognosis.RiskFactor}
+                    hideText={true}
+                  />
+                ) : (
+                  <div></div>
+                )}
                 <Typography className={classes.pos} color="textSecondary">
                   Odds of ESRD in 10 Years: {this.state.prognosis.Percentile} %
                 </Typography>
@@ -171,8 +173,8 @@ class PatientDetails extends Component {
           ) : (
             <div></div>
           )}
-          {this.state.prognosis.Model == 0 ||
-          this.state.prognosis.Model == 1 ? (
+          {this.state.prognosis.Model === 0 ||
+          this.state.prognosis.Model === 1 ? (
             <Grid item component="span" className={classes.alignBox}>
               <Card className={classes.root}>
                 <Typography
@@ -184,7 +186,7 @@ class PatientDetails extends Component {
                   CKD PredictionScore
                 </Typography>
                 <Typography className={classes.pos} color="textSecondary">
-                  Prognosis performed using ML model
+                  Prognosis performed using ML Prognosis model
                 </Typography>
                 <GaugeChart
                   id="gauge-chart1"
@@ -201,8 +203,8 @@ class PatientDetails extends Component {
           ) : (
             <div></div>
           )}
-          {this.state.prognosis.SimpleModel == 0 ||
-          this.state.prognosis.SimpleModel == 1 ? (
+          {this.state.prognosis.SimpleModel === 0 ||
+          this.state.prognosis.SimpleModel === 1 ? (
             <Grid item component="span" className={classes.alignBox}>
               <Card className={classes.root}>
                 <Typography
@@ -211,11 +213,11 @@ class PatientDetails extends Component {
                   gutterBottom
                 />
                 <Typography variant="h5" component="h2">
-                  CKD PredictionScore
+                  CKD SimplePredictionScore
                 </Typography>
                 <Typography className={classes.pos} color="textSecondary">
-                  Prognosis Using Simplified Model, Enter More records for more
-                  thourough Prognosis
+                  Prognosis using Simplified Model, Please enter additional
+                  observations for more confidence
                 </Typography>
                 <GaugeChart
                   id="gauge-chart1"
@@ -232,7 +234,7 @@ class PatientDetails extends Component {
           ) : (
             <div></div>
           )}
-          {this.state.prognosis.ModelScore ? (
+          {this.state.prognosis.ModelScore == null ? (
             <Grid item component="span" className={classes.alignBox}>
               <Card className={classes.root}>
                 <Typography
@@ -244,8 +246,9 @@ class PatientDetails extends Component {
                   CKD PredictionScore
                 </Typography>
                 <Typography className={classes.pos} color="textSecondary">
-                  Not enough records to make Prediction. Add Observations to get
-                  a prognosis.
+                  Please enter additional Observations to recieve a
+                  PredictionScore. At a minimum you must enter Creatinine, Blood
+                  Pressure, and Specific Gravity
                 </Typography>
               </Card>
             </Grid>

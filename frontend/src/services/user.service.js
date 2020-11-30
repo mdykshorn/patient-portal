@@ -58,7 +58,7 @@ function handleResponse(response) {
         logout();
         // location.reload(true);
       }
-
+      alert("Invalid Username or Password");
       const error = (data && data.message) || response.statusText;
       return Promise.reject(error);
     }

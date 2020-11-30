@@ -183,13 +183,14 @@ class Register extends React.Component {
                             margin="normal"
                             id="date-picker-inline"
                             name="dob"
+                            type="patient_id"
                             label="Date of Birth"
                             value={this.state.dob}
-                            onChange={(event) =>
+                            onChange={(event) => {
                               this.setState({
-                                [event.target.name]: event.target.value,
-                              })
-                            }
+                                dob: event,
+                              });
+                            }}
                             KeyboardButtonProps={{
                               "aria-label": "change date",
                             }}
